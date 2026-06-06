@@ -59,6 +59,11 @@ fun GamesScreen(
     var newProfileName by remember { mutableStateOf("") }
     var newProfileMode by remember { mutableStateOf("MULTIPLAYER") }
 
+    // Dialog state for registering games manually
+    var showAddGameDialog by remember { mutableStateOf(false) }
+    var manuallyGamePkg by remember { mutableStateOf("") }
+    var manuallyGameLabel by remember { mutableStateOf("") }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -118,13 +123,28 @@ fun GamesScreen(
 
         // Horizontal tabs of detected games
         item {
-            Text(
-                text = "DETECTED SHOOTER APPS ON DEVICE",
-                fontSize = 10.sp,
-                fontWeight = FontWeight.Bold,
-                color = GrayTextMuted,
-                letterSpacing = 1.sp
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "TARGET GAMES INSTALLED / MAPPED",
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = GrayTextMuted,
+                    letterSpacing = 1.sp
+                )
+                TextButton(
+                    onClick = { showAddGameDialog = true },
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+                    modifier = Modifier.height(26.dp)
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(11.dp), tint = PrimaryIndigo)
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("REGISTER GAME MANUAL", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = PrimaryIndigo)
+                }
+            }
         }
 
         item {
@@ -472,6 +492,58 @@ fun GamesScreen(
             dismissButton = {
                 TextButton(onClick = { showProfileDialog = false }) {
                     Text("CLOSE", color = AccentRose, fontSize = 11.sp)
+                }
+            },
+            containerColor = CardBackground,
+            titleContentColor = Color.White,
+            textContentColor = Color.White
+        )
+    }
+
+    // Modal dialog to manually map click triggers for any custom game slot
+    if (showAddGameDialog) {
+        AlertDialog(
+            onDismissRequest = { showAddGameDialog = false },
+            title = { Text("Register New Game Slot", fontSize = 14.sp, fontWeight = FontWeight.Bold) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("Enter name and package to assign overlay buttons and tap gestures manually:", fontSize = 11.sp, color = GrayTextMuted)
+                    
+                    OutlinedTextField(
+                        value = manuallyGameLabel,
+                        onValueChange = { manuallyGameLabel = it },
+                        placeholder = { Text("Game Name (e.g. Call of Duty Mobile)", fontSize = 11.sp) },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = PrimaryIndigo)
+                    )
+
+                    OutlinedTextField(
+                        value = manuallyGamePkg,
+                        onValueChange = { manuallyGamePkg = it },
+                        placeholder = { Text("Package Name (e.g. com.activision.callofduty.shooter)", fontSize = 11.sp) },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = PrimaryIndigo)
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        if (manuallyGameLabel.isNotBlank() && manuallyGamePkg.isNotBlank()) {
+                            gameDetectionManager.manuallyAddGame(manuallyGamePkg.trim(), manuallyGameLabel.trim())
+                            selectedGamePkg = manuallyGamePkg.trim()
+                            manuallyGameLabel = ""
+                            manuallyGamePkg = ""
+                            showAddGameDialog = false
+                        }
+                    }
+                ) {
+                    Text("REGISTER TARGET", fontWeight = FontWeight.Bold, color = PrimaryIndigo, fontSize = 11.sp)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showAddGameDialog = false }) {
+                    Text("CANCEL", color = AccentRose, fontSize = 11.sp)
                 }
             },
             containerColor = CardBackground,

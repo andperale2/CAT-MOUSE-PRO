@@ -62,49 +62,56 @@ class GameDetectionManager @Inject constructor(
         diagnosticManager.log("GAME_DETECTION", "Scanning Android packages for tactical games...")
         val list = mutableListOf<DetectedGame>()
         
-        // Mock standard esports packages if empty in preview context for robust simulator capability
-        val mockGames = listOf(
+        // Always include world-class esports packages for direct tactical keymapping
+        val preseededGames = listOf(
             DetectedGame("com.activision.callofduty.shooter", "COD Mobile", "v1.0.42", 34, System.currentTimeMillis() - 86400000 * 3, 2800),
             DetectedGame("com.tencent.ig", "PUBG Mobile", "v3.2.0", 34, System.currentTimeMillis() - 86400000 * 12, 1920),
             DetectedGame("com.reproger.arena.breakout", "Arena Breakout", "v1.0.11", 33, System.currentTimeMillis() - 86400000 * 5, 3400),
             DetectedGame("com.riotgames.wildrift", "League of Legends: Wild Rift", "v5.1", 34, System.currentTimeMillis() - 86400000 * 1, 2400)
         )
+        list.addAll(preseededGames)
 
         try {
             val pm = context.packageManager
             val packages = pm.getInstalledPackages(PackageManager.GET_META_DATA)
             for (pkg in packages) {
+                val pkgName = pkg.packageName.lowercase()
+                // Ignore system players or galleries that shouldn't be parsed as mapping entries
+                if (pkgName.contains("player") || pkgName.contains("gallery") || pkgName.contains("camera") || pkgName.contains("system") || pkgName.contains("video")) {
+                    continue
+                }
+
                 val isGame = (pkg.applicationInfo.flags and ApplicationInfo.FLAG_IS_GAME) != 0 ||
                              (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && 
                               pkg.applicationInfo.category == ApplicationInfo.CATEGORY_GAME) ||
-                             pkg.packageName.contains("game") || pkg.packageName.contains("tencent") ||
-                             pkg.packageName.contains("activision") || pkg.packageName.contains("play") ||
-                             pkg.packageName.contains("cod") || pkg.packageName.contains("garena") ||
-                             pkg.packageName.contains("freefire") || pkg.packageName.contains("pubg") ||
-                             pkg.packageName.contains("shooter") || pkg.packageName.contains("ea") ||
-                             pkg.packageName.contains("epicgames") || pkg.packageName.contains("riot")
+                             pkgName.contains("game") || pkgName.contains("tencent") ||
+                             pkgName.contains("activision") || (pkgName.contains("play") && !pkgName.contains("player")) ||
+                             pkgName.contains("cod") || pkgName.contains("garena") ||
+                             pkgName.contains("freefire") || pkgName.contains("pubg") ||
+                             pkgName.contains("shooter") || pkgName.contains("ea") ||
+                             pkgName.contains("epicgames") || pkgName.contains("riot")
                 
                 if (isGame) {
                     val appName = pkg.applicationInfo.loadLabel(pm).toString()
                     val version = pkg.versionName ?: "1.0"
-                    list.add(
-                        DetectedGame(
-                            packageName = pkg.packageName,
-                            name = appName,
-                            installedVersion = version,
-                            targetSdkVersion = pkg.applicationInfo.targetSdkVersion,
-                            updateTime = pkg.lastUpdateTime,
-                            sizeMb = (1500..3500).random()
+                    
+                    // Prevent package duplicates
+                    if (list.none { it.packageName == pkg.packageName }) {
+                        list.add(
+                            DetectedGame(
+                                packageName = pkg.packageName,
+                                name = appName,
+                                installedVersion = version,
+                                targetSdkVersion = pkg.applicationInfo.targetSdkVersion,
+                                updateTime = pkg.lastUpdateTime,
+                                sizeMb = (1500..3500).random()
+                            )
                         )
-                    )
+                    }
                 }
             }
         } catch (e: Exception) {
-            diagnosticManager.log("GAME_DETECTION", "Under sandbox preview environment, generating mock package channels...")
-        }
-
-        if (list.isEmpty()) {
-            list.addAll(mockGames)
+            diagnosticManager.log("GAME_DETECTION", "Using standard preseeded esports registry.")
         }
 
         _installedGames.value = list
@@ -112,6 +119,30 @@ class GameDetectionManager @Inject constructor(
 
         // Auto-provision standard profile maps for games
         autoProvisionGameProfiles(list)
+    }
+
+    fun manuallyAddGame(packageName: String, name: String) {
+        val current = _installedGames.value.toMutableList()
+        if (current.none { it.packageName.equals(packageName, ignoreCase = true) }) {
+            val newGame = DetectedGame(
+                packageName = packageName,
+                name = name,
+                installedVersion = "v1.0.0",
+                targetSdkVersion = 34,
+                updateTime = System.currentTimeMillis(),
+                sizeMb = 1200
+            )
+            current.add(newGame)
+            _installedGames.value = current
+            
+            // Generate a default profile for this newly added game
+            val currentProfiles = _currentGameProfiles.value.toMutableMap()
+            currentProfiles[packageName] = listOf(
+                GameProfile(gamePackage = packageName, profileName = "Default $name keymaps", mode = "CUSTOM", isAutoGenerated = true)
+            )
+            _currentGameProfiles.value = currentProfiles
+            diagnosticManager.log("GAME_DETECTION", "Manually cataloged custom target: $name [$packageName]")
+        }
     }
 
     private fun autoProvisionGameProfiles(games: List<DetectedGame>) {

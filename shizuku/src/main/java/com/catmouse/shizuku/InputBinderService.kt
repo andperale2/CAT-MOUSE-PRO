@@ -8,15 +8,15 @@ class InputBinderService : Service() {
 
     private val binder = object : IInputBinder.Stub() {
         override fun injectTap(x: Int, y: Int) {
-            // Stub implementation for Phase 1 base architecture
+            AccessibilityGestureService.instance?.clickAt(x.toFloat(), y.toFloat())
         }
 
         override fun injectSwipe(x1: Int, y1: Int, x2: Int, y2: Int, durationMs: Int) {
-            // Stub implementation for Phase 1 base architecture
+            AccessibilityGestureService.instance?.swipe(x1.toFloat(), y1.toFloat(), x2.toFloat(), y2.toFloat(), durationMs.toLong())
         }
 
         override fun setPointerSpeedMultiplier(multiplier: Float) {
-            // Stub implementation for Phase 1 base architecture
+            // Stub implementation for multiplier config
         }
 
         override fun isAuthorized(): Boolean {
