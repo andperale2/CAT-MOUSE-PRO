@@ -75,8 +75,14 @@ class GameDetectionManager @Inject constructor(
             val packages = pm.getInstalledPackages(PackageManager.GET_META_DATA)
             for (pkg in packages) {
                 val isGame = (pkg.applicationInfo.flags and ApplicationInfo.FLAG_IS_GAME) != 0 ||
+                             (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && 
+                              pkg.applicationInfo.category == ApplicationInfo.CATEGORY_GAME) ||
                              pkg.packageName.contains("game") || pkg.packageName.contains("tencent") ||
-                             pkg.packageName.contains("activision") || pkg.packageName.contains("play")
+                             pkg.packageName.contains("activision") || pkg.packageName.contains("play") ||
+                             pkg.packageName.contains("cod") || pkg.packageName.contains("garena") ||
+                             pkg.packageName.contains("freefire") || pkg.packageName.contains("pubg") ||
+                             pkg.packageName.contains("shooter") || pkg.packageName.contains("ea") ||
+                             pkg.packageName.contains("epicgames") || pkg.packageName.contains("riot")
                 
                 if (isGame) {
                     val appName = pkg.applicationInfo.loadLabel(pm).toString()

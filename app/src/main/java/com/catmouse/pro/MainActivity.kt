@@ -90,10 +90,10 @@ fun MainLayout(
             ) {
                 val items = listOf(
                     Triple(Screen.Dashboard, Icons.Default.Home, "Dashboard"),
-                    Triple(Screen.Games, Icons.Default.PlayArrow, "Cloud"),
-                    Triple(Screen.Devices, Icons.Default.Build, "Input"),
-                    Triple(Screen.Profiles, Icons.Default.List, "Macros"),
-                    Triple(Screen.Settings, Icons.Default.Settings, "HUD Setup")
+                    Triple(Screen.Games, Icons.Default.PlayArrow, "Games / Mapper"),
+                    Triple(Screen.Devices, Icons.Default.Build, "Input Devices"),
+                    Triple(Screen.Profiles, Icons.Default.List, "Macros / Binds"),
+                    Triple(Screen.Settings, Icons.Default.Settings, "HUD Settings")
                 )
 
                 items.forEach { (screen, icon, label) ->
