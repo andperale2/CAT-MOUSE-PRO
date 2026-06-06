@@ -40,6 +40,7 @@ export default function AndroidSimulator({
 }: AndroidSimulatorProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<'app' | 'game' | 'car'>('game');
+  const [selectedGameType, setSelectedGameType] = useState<'cod_mobile' | 'free_fire' | 'pubg_mobile'>('cod_mobile');
   const [dragStartPos, setDragStartPos] = useState<{ x: number; y: number } | null>(null);
   const [draggedOverlayId, setDraggedOverlayId] = useState<string | null>(null);
 
@@ -258,30 +259,114 @@ export default function AndroidSimulator({
           {/* VIRTUAL SCREEN CANVAS */}
           <div className="relative flex-1 bg-zinc-950 flex flex-col justify-end text-white overflow-hidden">
             
-            {/* SCREEN 1: GAME BACKGROUND */}
+            {/* SCREEN 1: GAME BACKGROUND WITH SEVERAL CHANNELS */}
             {activeTab === 'game' && (
-              <div className="absolute inset-0 bg-neutral-900 bg-cover bg-center flex flex-col justify-between" style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url(https://images.unsplash.com/photo-1612287230202-1bf1d85d1bdf?q=80&w=600&auto=format&fit=crop)' }}>
-                <div className="pt-24 px-4 flex justify-between text-zinc-300">
+              <div 
+                className="absolute inset-0 bg-neutral-900 bg-cover bg-center flex flex-col justify-between" 
+                style={{ 
+                  backgroundImage: selectedGameType === 'cod_mobile' 
+                    ? 'linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url(https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop)'
+                    : selectedGameType === 'free_fire'
+                    ? 'linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url(https://images.unsplash.com/photo-1627856013091-fed6e4e30025?q=80&w=600&auto=format&fit=crop)'
+                    : 'linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url(https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop)'
+                }}
+              >
+                {/* Active HUD title overlay */}
+                <div className="absolute top-[84px] left-0 right-0 px-3 z-10 flex gap-1 justify-center">
+                  {[
+                    { id: 'cod_mobile', label: 'COD M' },
+                    { id: 'free_fire', label: 'F.Fire' },
+                    { id: 'pubg_mobile', label: 'PUBG' }
+                  ].map((g) => (
+                    <button
+                      key={g.id}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedGameType(g.id as any);
+                      }}
+                      className={`text-[9px] font-bold px-1.5 py-0.5 rounded border leading-none transition ${
+                        selectedGameType === g.id
+                          ? 'bg-indigo-600 text-white border-indigo-400'
+                          : 'bg-black/75 text-zinc-400 border-zinc-800 hover:text-zinc-200'
+                      }`}
+                    >
+                      {g.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="pt-24 px-4 flex justify-between text-zinc-300 z-10">
                   <div className="bg-black/60 backdrop-blur-md border border-neutral-700/40 px-2 py-1 rounded text-[10px] font-mono leading-none">
-                    <span className="text-indigo-400">LVL</span> 140
+                    <span className="text-indigo-400">MAPPER</span> {selectedGameType === 'cod_mobile' ? 'K2ER PRO' : selectedGameType === 'free_fire' ? 'PANDA v3' : 'GG DRIVER'}
                   </div>
                   <div className="bg-black/60 backdrop-blur-md border border-neutral-700/40 px-2 py-1 rounded text-[10px] font-mono leading-none">
-                    <span className="text-rose-500">FPS</span> 120
+                    <span className="text-emerald-400">ACTIVE</span> 120 FPS
                   </div>
                 </div>
 
-                {/* Simulated Game Control Areas */}
-                <div className="p-4 flex justify-between items-end mb-12">
-                  <div className="w-14 h-14 bg-white/10 rounded-full border border-white/20 flex items-center justify-center animate-pulse">
-                    <Compass className="w-6 h-6 text-white/50" />
+                {/* D-Pad WASD Overlay on Left Joystick area */}
+                <div 
+                  className="absolute pointer-events-none rounded-full border border-teal-400/40 bg-teal-500/10 flex flex-col items-center justify-between p-1.5 w-14 h-14 z-10"
+                  style={{
+                    left: '20%',
+                    bottom: '18%',
+                    transform: 'translate(-50%, 50%)'
+                  }}
+                >
+                  <div className="text-[8px] font-black text-teal-300">W</div>
+                  <div className="flex justify-between w-full text-[8px] font-black text-teal-300 px-1">
+                    <span>A</span>
+                    <span>D</span>
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <div className="w-10 h-10 bg-red-600/30 rounded-full border border-red-500/40 flex items-center justify-center text-xs font-black text-rose-300 scale-90 shadow-md">
-                      FIRE
+                  <div className="text-[8px] font-black text-teal-300">S</div>
+                  <div className="absolute inset-4 rounded-full border border-teal-400/30 bg-teal-400/20" />
+                </div>
+
+                {/* Overlaid simulated binder active keybind handles */}
+                {[
+                  // COD MOBILE Keybind layouts
+                  { game: 'cod_mobile', key: 'L-Click', label: 'Shoot', x: 80, y: 64, color: 'bg-indigo-500/80 border-indigo-300 text-white animate-pulse' },
+                  { game: 'cod_mobile', key: 'R-Click', label: 'Aim', x: 80, y: 36, color: 'bg-indigo-500/30 border-indigo-400/40 text-indigo-300' },
+                  { game: 'cod_mobile', key: 'Space', label: 'Jump', x: 92, y: 50, color: 'bg-zinc-800/90 border-zinc-500 text-zinc-100' },
+                  { game: 'cod_mobile', key: 'C', label: 'Slide', x: 90, y: 72, color: 'bg-zinc-800/90 border-zinc-500 text-zinc-100' },
+                  { game: 'cod_mobile', key: 'R', label: 'Reload', x: 70, y: 85, color: 'bg-zinc-800/90 border-zinc-500 text-zinc-100' },
+                  { game: 'cod_mobile', key: '1', label: 'Weapon 1', x: 42, y: 88, color: 'bg-zinc-800/90 border-zinc-500 text-zinc-100' },
+                  { game: 'cod_mobile', key: '2', label: 'Weapon 2', x: 58, y: 88, color: 'bg-zinc-800/90 border-zinc-500 text-zinc-100' },
+                  
+                  // FREE FIRE Keybind layouts
+                  { game: 'free_fire', key: 'L-Click', label: 'Shoot', x: 82, y: 72, color: 'bg-indigo-500/80 border-indigo-300 text-white animate-pulse' },
+                  { game: 'free_fire', key: 'R-Click', label: 'Scope', x: 82, y: 44, color: 'bg-indigo-500/30 border-indigo-400/40 text-indigo-305' },
+                  { game: 'free_fire', key: 'Space', label: 'Jump', x: 92, y: 62, color: 'bg-zinc-800/90 border-zinc-500 text-zinc-100' },
+                  { game: 'free_fire', key: 'C', label: 'Crouch', x: 92, y: 80, color: 'bg-zinc-800/90 border-zinc-500 text-zinc-100' },
+                  { game: 'free_fire', key: 'R', label: 'Reload', x: 68, y: 88, color: 'bg-zinc-800/90 border-zinc-500 text-zinc-100' },
+                  { game: 'free_fire', key: 'Shift', label: 'Sprint', x: 12, y: 40, color: 'bg-zinc-800/90 border-zinc-500 text-zinc-100' },
+
+                  // PUBG MOBILE Keybind layouts
+                  { game: 'pubg_mobile', key: 'L-Click', label: 'Fire', x: 76, y: 66, color: 'bg-indigo-500/80 border-indigo-300 text-white animate-pulse' },
+                  { game: 'pubg_mobile', key: 'R-Click', label: 'Aim', x: 84, y: 44, color: 'bg-indigo-500/30 border-indigo-400/40 text-indigo-305' },
+                  { game: 'pubg_mobile', key: 'Space', label: 'Jump', x: 92, y: 56, color: 'bg-zinc-800/90 border-zinc-500 text-zinc-100' },
+                  { game: 'pubg_mobile', key: 'C', label: 'Crouch', x: 92, y: 72, color: 'bg-zinc-800/90 border-zinc-500 text-zinc-100' },
+                  { game: 'pubg_mobile', key: 'Z', label: 'Prone', x: 92, y: 88, color: 'bg-zinc-800/90 border-zinc-500 text-zinc-10s' },
+                  { game: 'pubg_mobile', key: 'R', label: 'Reload', x: 74, y: 86, color: 'bg-zinc-800/90 border-zinc-500 text-zinc-100' },
+                ].filter(item => item.game === selectedGameType).map((bind) => (
+                  <div
+                    key={bind.key + bind.game}
+                    className="absolute pointer-events-none -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-[1px] z-15"
+                    style={{ left: `${bind.x}%`, top: `${bind.y}%` }}
+                  >
+                    <div className={`w-5.5 h-5.5 rounded-full border border-white/40 flex items-center justify-center text-[7px] font-black shadow-md ${bind.color}`}>
+                      {bind.key}
                     </div>
-                    <div className="w-11 h-11 bg-white/15 rounded-full border border-white/25 flex items-center justify-center text-[10px] font-semibold text-zinc-200 shadow-md">
-                      CROUCH
-                    </div>
+                    <span className="text-[6.5px] font-black text-white bg-black/60 px-0.5 rounded leading-none uppercase">{bind.label}</span>
+                  </div>
+                ))}
+
+                {/* Background placeholders and branding */}
+                <div className="p-4 flex justify-between items-end mb-12 z-5">
+                  <div className="w-10 h-10 border border-white/5 bg-white/5 rounded-full" />
+                  <div className="flex flex-col gap-1.5 opacity-30">
+                    <div className="w-6 h-6 rounded-full bg-zinc-800" />
+                    <div className="w-6 h-6 rounded-full bg-zinc-800" />
                   </div>
                 </div>
               </div>
