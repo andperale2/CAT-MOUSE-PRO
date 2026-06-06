@@ -1,0 +1,6 @@
+{
+  "name": "Cat Mouse Pro Design Studio",
+  "description": "Interactive layout simulator, ADB & Shizuku debugging workstation, automated profile builder, and vehicle HUD configurator for the Cat Mouse Pro Android framework.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
