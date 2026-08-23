@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es-419">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>De Anime a Live-Action con IA — Curso Completo Narrado</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .course-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 40px 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .course-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .course-header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            color: #ffffff;
+        }
+
+        .course-content {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 35px;
+        }
+
+        .module {
+            margin-bottom: 30px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .module-header {
+            background: var(--primary);
+            color: #ffffff;
+            padding: 18px 25px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .module-content {
+            padding: 25px;
+        }
+
+        .lesson {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: var(--bg);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            page-break-inside: avoid;
+        }
+
+        .lesson-header {
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .lesson h2 {
+            font-size: 1.35rem;
+            color: #818cf8;
+        }
+
+        .lesson-content {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text);
+        }
+
+        .lesson-content p {
+            margin-bottom: 12px;
+        }
+
+        .lesson-content h3 {
+            font-size: 1.15rem;
+            margin: 20px 0 10px;
+            color: var(--secondary);
+        }
+
+        .lesson-content ul {
+            margin: 12px 0;
+            padding-left: 25px;
+        }
+
+        .lesson-content li {
+            margin-bottom: 8px;
+        }
+
+        .lesson-content blockquote {
+            background: var(--bg-card);
+            border-left: 4px solid var(--primary);
+            padding: 12px 18px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+
+        .lesson-content pre {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            margin: 15px 0;
+            white-space: pre-wrap;
+        }
+
+        .lesson-content code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: #0d1117;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #38bdf8;
+        }
+
+        .subtitle-segment {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .narration-box {
+            background: #0f2744;
+            border-left: 4px solid #3b82f6;
+            padding: 12px 16px;
+            margin-top: 10px;
+            border-radius: 0 8px 8px 0;
+            color: #93c5fd;
+            font-size: 0.95rem;
+        }
+
+        .narration-box strong {
+            color: #60a5fa;
+        }
+
+        @media print {
+            body {
+                background: #0f172a !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .lesson {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="course-header">
+            <h1>🎬 De Anime a Live-Action con IA</h1>
+            <p>El método paso a paso para convertir una escena de anime en una toma realista filmada — sin equipo, sin crew.</p>
+        </header>
+
+        <main class="course-content">
+            <div class="module">
+                <div class="module-header">
+                    Módulo 1: De Anime a Live-Action — Guía Completa y Guión Narrado
+                </div>
+                <div class="module-content" id="courseContainer">
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const courseData = {
+            title: "De Anime a Live-Action con IA",
+            modules: [
+                {
+                    id: "module1",
+                    title: "Módulo 1: De Anime a Live-Action — Guía Completa",
+                    lessons: [
+                        {
+                            id: "lesson1",
+                            title: "Lección 1: Bienvenida y Qué Lograrás",
+                            segments: [
+                                { type: "heading", text: "Bienvenida al curso", narration: "Bienvenido a este curso completo sobre cómo convertir escenas de anime en tomas live-action realistas usando inteligencia artificial. En este curso vas a aprender el método exacto que uso todos los días en el estudio para transformar anime en video realista, sin necesidad de equipo costoso ni un equipo de producción." },
+                                { type: "paragraph", text: "Esta guía te lleva desde cero hasta tu primera toma live-action generada y lista para publicar. No vamos a saltarnos nada: vamos a recorrer juntos los únicos dos movimientos que realmente importan, en el orden correcto.", narration: "Esta guía te lleva desde cero hasta tu primera toma live-action generada y lista para publicar. No vamos a saltarnos nada: vamos a recorrer juntos los únicos dos movimientos que realmente importan, en el orden correcto." },
+                                { type: "list", text: "- Parte 1 — Generar tu imagen: Elige una escena, extrae un fotograma clave (keyframe) y conviértelo en un visual realista.\n- Parte 2 — Generar tu video: Toma esa imagen y dale vida con cámara, luz y actuación, sin que la IA se desmorone.", narration: "Vamos a dividir esto en dos partes claras. En la primera parte, vas a generar tu imagen: vas a elegir una escena, extraer una imagen de referencia de ella, lo que llamamos el keyframe, y convertirlo en un visual live-action realista. En la segunda parte, vas a generar tu video: vas a tomar esa imagen y darle vida, agregando cámara, iluminación y performance, sin que la inteligencia artificial se desmorone." },
+                                { type: "paragraph", text: "Este es el flujo de trabajo exacto que utilizo a diario en el estudio. Nada teórico: copias, pegas y generas.", narration: "Este es exactamente el mismo flujo de trabajo que uso todos los días en el estudio. Nada de teoría: vas a copiar, pegar y generar. Es práctico desde el primer minuto." },
+                                { type: "note", text: "Principiantes completos:\nSi puedes descargar un video y copiar-pegar texto, tienes el nivel suficiente. No se requieren habilidades de edición 3D.", narration: "Y si eres completamente principiante, no te preocupes. Si puedes descargar un video y copiar y pegar texto, ya tienes el nivel necesario. No se requiere ninguna habilidad de edición o 3D para este primer paso. Vamos a empezar desde lo más básico." }
+                            ]
+                        },
+                        {
+                            id: "lesson2",
+                            title: "Lección 2: El Principio en 30 Segundos",
+                            segments: [
+                                { type: "heading", text: "Anime → Live-action: cómo funciona", narration: "Ahora vamos a entender el principio fundamental en solo 30 segundos. ¿Cómo funciona exactamente convertir anime a live-action?" },
+                                { type: "paragraph", text: "Un video es una secuencia de imágenes. No \"conviertes\" una escena de una sola vez: trabajas imagen por imagen. El camino es siempre el mismo.", narration: "Un video es simplemente una secuencia de imágenes. Entonces no vas a convertir una escena completa de una sola vez: vas a trabajar imagen por imagen. El camino es siempre el mismo, y eso es lo que hace que este proceso sea predecible y repetible." },
+                                { type: "list", text: "- Eliges: Un clip de anime que te inspire.\n- Extraes: Un fotograma nítido de la escena.\n- La IA lo hace real: Parte 1 de esta guía.\n- La IA lo anima: Parte 2 de esta guía.", narration: "El proceso tiene cuatro pasos claros. Primero, eliges un clip de anime que te inspire. Segundo, extraes un fotograma nítido de esa escena. Tercero, usas inteligencia artificial para hacerlo realista, eso es la primera parte de esta guía. Y cuarto, usas inteligencia artificial para animarlo, que es la segunda parte de la guía." },
+                                { type: "paragraph", text: "Esta guía cubre los dos pasos clave: generar la imagen y generar el video. Ahí se decide el 90% del resultado.", narration: "Esta guía cubre exactamente esos dos pasos resaltados: generar la imagen y generar el video. Y te voy a decir algo importante: ahí es donde se decide el 90% del resultado final. Si dominas estos dos pasos, ya tienes lo más difícil hecho." }
+                            ]
+                        },
+                        {
+                            id: "lesson3",
+                            title: "Lección 3: Tu Stack Mínimo",
+                            segments: [
+                                { type: "heading", text: "Una sola herramienta para empezar", narration: "Vamos a hablar de qué necesitas realmente para empezar. Y la buena noticia es que necesitas muy poco." },
+                                { type: "paragraph", text: "Olvídate de listas con 15 aplicaciones. Para esta guía, solo necesitas:", narration: "Olvídate de las listas de 15 aplicaciones. Para esta primera guía, todo lo que necesitas es esto:" },
+                                { type: "list", text: "- Una herramienta de IA todo en uno (ej. Higgsfield con modelo Nano Banana, TapNow o Seedance).\n- Una forma de capturar un fotograma (reproductor de video + captura de pantalla).\n- Un editor básico (la app de edición de tu teléfono es suficiente).", narration: "Primero, necesitas una herramienta de generación de inteligencia artificial todo en uno. Yo trabajo en Higgsfield, usando el modelo Nano Banana para la imagen más la generación de video integrada. Alternativas: TapNow o Seedance. La herramienta hace la imagen y el video, así que te mantienes en un solo lugar. Segundo, necesitas una forma de capturar un fotograma: un reproductor de video y la tecla de captura de pantalla son suficientes para empezar. Y tercero, un editor básico: la aplicación de edición de tu teléfono es más que suficiente para unir tus tomas." },
+                                { type: "note", text: "La corrección de color, upscaling y conversión de FPS separan un video aceptable de uno profesional. Eso se aborda en el curso avanzado; aquí buscamos tu primer clip terminado y publicado.", narration: "Ahora, ¿por qué no estamos hablando de corrección de color, upscaling o conversión de fps? Porque eso es lo que separa un video 'bien hecho' de uno con 'firma profesional'. Eso lo guardamos para el curso avanzado. Aquí, nuestro objetivo es que tengas tu primer clip terminado y publicado, no la perfección." }
+                            ]
+                        },
+                        {
+                            id: "lesson4",
+                            title: "Lección 4: Parte 1 - Generar tu Imagen",
+                            segments: [
+                                { type: "heading", text: "Generar tu imagen", narration: "Ahora entramos en la Parte 1: generar tu imagen. Y esto es crítico: todo empieza con la imagen. Si tu keyframe live-action es bueno, tu video también será bueno. Si está mal hecho, ningún prompt de video lo va a salvar. Así que vamos a tomar el tiempo que necesita." },
+                                { type: "paragraph", text: "Elige una escena con una composición fuerte: personaje de frente o perfil, plano general impactante, una mirada. Evita tomas saturadas de acción o muchos personajes.", narration: "Lo primero: elige una escena con una composición fuerte. Busca un personaje de frente o de perfil, un plano general impactante, una mirada. Por ahora, evita tomas llenas de acción o muchos personajes. Cuanto más simple sea, más fiel será la inteligencia artificial." },
+                                { type: "list", text: "- Pausa el video en el momento exacto.\n- Captura un fotograma nítido (sin motion blur). Ese es tu keyframe.\n- Mantén buena resolución.", narration: "Tres pasos prácticos aquí. Primero, pausa el video en el momento exacto que quieres recrear. Segundo, captura un fotograma nítido, no durante el motion blur. Ese es tu keyframe, tu imagen de referencia. Y tercero, mantén buena resolución: una imagen demasiado pequeña da un resultado borroso." },
+                                { type: "paragraph", text: "En tu herramienta dispones de 3 modalidades para generar tu imagen live-action.", narration: "En tu herramienta, tienes tres formas de generar tu imagen live-action. Vamos a explorar cada una:" }
+                            ]
+                        },
+                        {
+                            id: "lesson5",
+                            title: "Lección 5: Tres Formas de Generar",
+                            segments: [
+                                { type: "heading", text: "A · Imagen → Live-action (la más simple)", narration: "La primera forma es la más simple: Imagen a Live-action. Subes tu keyframe y pides una versión live-action realista. La inteligencia artificial mantiene la composición y la pose, y cambia el estilo anime por algo real. Perfecto para empezar." },
+                                { type: "heading", text: "B · Imagen + Referencia de personaje (consistencia)", narration: "La segunda forma es Imagen más referencia de personaje, para consistencia. Subes tu keyframe y también una imagen de referencia del rostro o personaje que quieres. La inteligencia artificial coloca ese personaje en la escena. Es esencial cuando necesitas el mismo actor en varias tomas." },
+                                { type: "heading", text: "C · Texto → Imagen (construir desde cero)", narration: "La tercera forma es Texto a Imagen, construir desde cero. ¿No tienes keyframe? Describes la escena completamente por escrito y la inteligencia artificial la crea. Da más libertad, pero necesita un prompt más ajustado, que vamos a ver en el próximo paso." }
+                            ]
+                        },
+                        {
+                            id: "lesson6",
+                            title: "Lección 6: Estructura de un Buen Prompt",
+                            segments: [
+                                { type: "paragraph", text: "Un buen prompt es una lista de bloques claros organizados por orden de importancia:", narration: "Ahora, hablemos de prompts. Un buen prompt no es una frase que intenta decir todo de una vez. Es una lista de bloques claros, del más importante al menos importante. Vamos a ver cada bloque." },
+                                { type: "table", text: "• SUBJECT: Quién / qué está en la imagen\n• ACTION / POSE: Actitud, hacia dónde mira\n• FRAMING: Plano general, primer plano, ángulo de cámara\n• LIGHT: Fuente, dirección, ambiente (neón, sol cálido...)\n• MOOD: Sensación (realista, cinematográfico, grano fino)\n• AVOID: Lo que no quieres (dibujo, cartoon, distorsiones)", narration: "Primero, SUBJECT: quién o qué está en la imagen, a menos que proporciones una referencia, y ahí viene la regla de oro que vamos a ver. Segundo, ACTION o POSE: qué hace el personaje, su actitud, hacia dónde mira. Tercero, FRAMING: plano general, primer plano, ángulo alto, y el ángulo de cámara. Cuarto, LIGHT: fuente, dirección, ambiente, como luz suave de final de día o neón frío. Quinto, MOOD: la sensación, realista, cinematográfico, desaturado, grano de película fino. Y sexto, AVOID: lo que no quieres, como dibujo, cartoon, distorsiones, texto en pantalla." },
+                                { type: "note", text: "Regla de Oro: Si usas imagen de referencia del personaje, NUNCA lo describas en el prompt (ni cabello, ni ropa, ni rostro). La referencia es suficiente; describirlo genera conflictos.", narration: "Aquí viene la regla de oro: si subiste una imagen de referencia del rostro o personaje, NUNCA describas al personaje en el prompt. Nada de cabello, nada de outfit, nada de rostro. La referencia es suficiente. Describirlo además crea conflictos que distorsionan el resultado. En ese caso, tu prompt solo contiene la acción, el encuadre, la luz y el ambiente." },
+                                { type: "note", text: "Prompt Autocontenido: Cada prompt debe valer por sí solo. La IA no recuerda la toma anterior.", narration: "Otra regla importante: cada prompt debe ser autocontenido. La inteligencia artificial empieza desde cero en cada generación: no hay 'como la toma anterior'. Todo lo que importa vive en ESTE prompt. Así que sé explícito y completo." }
+                            ]
+                        },
+                        {
+                            id: "lesson7",
+                            title: "Lección 7: Prompts de Ejemplo Listos para Copiar",
+                            segments: [
+                                { type: "paragraph", text: "3 Prompts de Imagen listos para copiar y adaptar a tu escena:", narration: "Ahora te voy a dar tres prompts de imagen listos para copiar. Puedes usarlos directamente y adaptarlos a tu escena." },
+                                { type: "note", text: "Prompt 1 (Retrato Cinematográfico):\nCinematic live-action shot of a young warrior sitting in a dark alley, soft rim lighting from blue neon lights behind him, 35mm film photograph, shallow depth of field, photorealistic, 8k --no anime, cartoon, drawing, illustration", narration: "Prompt 1: Cinematic live-action shot of a young warrior sitting in a dark alley, soft rim lighting from blue neon lights behind him, 35mm film photograph, shallow depth of field, photorealistic, 8k --no anime, cartoon, drawing, illustration." },
+                                { type: "note", text: "Prompt 2 (Plano General de Paisaje / Ciudad):\nWide cinematic live-action shot of a futuristic Tokyo street at dusk, wet asphalt reflecting red neon signs, subtle volumetric fog, shot on Arri Alexa, photorealistic, atmospheric --no 3d render, CGI, cartoon", narration: "Prompt 2: Wide cinematic live-action shot of a futuristic Tokyo street at dusk, wet asphalt reflecting red neon signs, subtle volumetric fog, shot on Arri Alexa, photorealistic, atmospheric --no 3d render, CGI, cartoon." },
+                                { type: "note", text: "Prompt 3 (Detalle / Close-up Espada u Objeto):\nExtreme close-up live-action shot of a hand gripping a traditional katana handle, detailed metallic texture, soft sunlight filtering through bamboo leaves, cinematic film still --no anime style, painting", narration: "Prompt 3: Extreme close-up live-action shot of a hand gripping a traditional katana handle, detailed metallic texture, soft sunlight filtering through bamboo leaves, cinematic film still --no anime style, painting." }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        const container = document.getElementById('courseContainer');
+        courseData.modules[0].lessons.forEach(lesson => {
+            const lessonDiv = document.createElement('div');
+            lessonDiv.className = 'lesson';
+            let html = `<div class="lesson-header"><h2>${lesson.title}</h2></div><div class="lesson-content">`;
+            lesson.segments.forEach(seg => {
+                html += `<div class="subtitle-segment">`;
+                if (seg.type === 'heading') html += `<h3>${seg.text}</h3>`;
+                else if (seg.type === 'paragraph') html += `<p>${seg.text}</p>`;
+                else if (seg.type === 'list') html += `<ul>${seg.text.split('\n').map(item => `<li>${item.replace(/^- /, '')}</li>`).join('')}</ul>`;
+                else if (seg.type === 'note') html += `<blockquote><strong>${seg.text}</strong></blockquote>`;
+                else if (seg.type === 'table') html += `<pre><code>${seg.text}</code></pre>`;
+
+                if (seg.narration) {
+                    html += `<div class="narration-box"><strong>🎙️ Narración (Audio):</strong> ${seg.narration}</div>`;
+                }
+                html += `</div>`;
+            });
+            html += `</div>`;
+            lessonDiv.innerHTML = html;
+            container.appendChild(lessonDiv);
+        });
+    </script>
+</body>
+</html>

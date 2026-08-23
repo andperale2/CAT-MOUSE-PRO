@@ -325,6 +325,14 @@ export default function App() {
 
         {/* Global Connection status strip */}
         <div className="hidden md:flex items-center gap-4 text-xs font-mono">
+          <a
+            href="/De_Anime_a_Live_Action_Curso_IA.pdf"
+            download="De_Anime_a_Live_Action_Curso_IA.pdf"
+            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-sans font-bold px-3.5 py-1.5 rounded-xl transition shadow-lg shadow-indigo-600/20 text-xs border border-indigo-400/30"
+          >
+            <span>📄</span>
+            <span>Descargar PDF del Curso</span>
+          </a>
           <div className="flex items-center gap-1.5 bg-[#111114] border border-white/5 px-3 py-1.5 rounded-xl">
             <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse" />
             <span className="text-gray-400 font-semibold uppercase">ADB HOST: 127.0.0.1:5555</span>
