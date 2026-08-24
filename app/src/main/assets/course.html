@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="es-419">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>De Anime a Live-Action con IA — Curso Completo Narrado</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --narrating-bg: #1e3a5f;
+            --narrating-border: #3b82f6;
+            --narrating-text: #60a5fa;
+            --completed-bg: #064e3b;
+            --completed-border: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .course-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 40px 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .course-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .course-header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .narrator-controls {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+
+        .narrator-controls h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .control-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #16a34a;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-container {
+            background: var(--border);
+            border-radius: 8px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .speed-control label {
+            font-weight: 600;
+        }
+
+        .speed-control select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .subtitles-container {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 100px;
+        }
+
+        .subtitles-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+        }
+
+        .subtitle-segment {
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 5px 0;
+            transition: all 0.3s;
+        }
+
+        .subtitle-segment.active {
+            background: var(--narrating-bg);
+            border-left: 4px solid var(--narrating-border);
+            color: var(--narrating-text);
+            font-weight: 500;
+        }
+
+        .subtitle-segment.completed {
+            opacity: 0.6;
+        }
+
+        .course-content {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 40px;
+        }
+
+        .module {
+            margin-bottom: 50px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .module-header {
+            background: var(--primary);
+            padding: 20px 30px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .module-content {
+            padding: 30px;
+        }
+
+        .lesson {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: var(--bg);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .lesson.completed {
+            border-color: var(--success);
+            background: var(--completed-bg);
+        }
+
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .lesson h2 {
+            font-size: 1.4rem;
+            color: var(--primary);
+        }
+
+        .lesson-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .lesson-content p {
+            margin-bottom: 15px;
+        }
+
+        .lesson-content h3 {
+            font-size: 1.2rem;
+            margin: 25px 0 15px;
+            color: var(--secondary);
+        }
+
+        .lesson-content ul, .lesson-content ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+
+        .lesson-content li {
+            margin-bottom: 10px;
+        }
+
+        .lesson-content blockquote {
+            background: var(--bg-card);
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .lesson-content pre {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            margin: 20px 0;
+        }
+
+        .lesson-content code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: #0d1117;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .lesson-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .lesson-content th, .lesson-content td {
+            border: 1px solid var(--border);
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .lesson-content th {
+            background: var(--primary);
+            font-weight: 600;
+        }
+
+        .lesson-content tr:nth-child(even) {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .narrating {
+            border-color: var(--narrating-border) !important;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .narrating .lesson-header {
+            background: var(--narrating-bg);
+        }
+
+        .narrating h2 {
+            color: var(--narrating-text) !important;
+        }
+
+        .completed .lesson-header {
+            background: var(--success);
+        }
+
+        .completed h2 {
+            color: white !important;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: var(--bg-card);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .checklist li:hover {
+            background: var(--border);
+        }
+
+        .checklist li.checked {
+            background: var(--success);
+            color: white;
+        }
+
+        .checklist li .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-muted);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .checklist li.checked .checkbox {
+            background: white;
+            color: var(--success);
+        }
+
+        .checklist li.checked .checkbox::after {
+            content: "✓";
+            font-weight: bold;
+        }
+
+        .accordion {
+            margin: 20px 0;
+        }
+
+        .accordion-item {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            background: var(--bg-card);
+            padding: 15px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-header:hover {
+            background: var(--border);
+        }
+
+        .accordion-content {
+            padding: 20px;
+            display: none;
+            background: var(--bg);
+        }
+
+        .accordion-content.active {
+            display: block;
+        }
+
+        .accordion-icon {
+            transition: transform 0.3s;
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .tabs {
+            margin: 20px 0;
+        }
+
+        .tab-headers {
+            display: flex;
+            gap: 5px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 15px;
+        }
+
+        .tab-header {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .tab-header:hover {
+            background: var(--border);
+        }
+
+        .tab-header.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background: var(--bg);
+            border-radius: 8px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .prompt-block {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .prompt-label {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--primary);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .prompt-english {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .prompt-spanish {
+            border-left: 4px solid #22c55e;
+        }
+
+        .prompt-explanation {
+            border-left: 4px solid #f59e0b;
+        }
+
+        @media (max-width: 768px) {
+            .course-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .control-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .course-content {
+                padding: 20px;
+            }
+
+            .module-content {
+                padding: 20px;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .badge-narrating {
+            background: var(--narrating-border);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .badge-completed {
+            background: var(--success);
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .narrator-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: var(--bg);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .narrator-status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+
+        .narrator-status-indicator.active {
+            background: var(--success);
+            animation: pulse 1s infinite;
+        }
+
+        .narrator-status-text {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="course-header">
+            <h1>🎬 De Anime a Live-Action con IA</h1>
+            <p>El método paso a paso para convertir una escena de anime en una toma realista filmada — sin equipo, sin crew.</p>
+        </header>
+
+        <div class="narrator-controls">
+            <h2>🎙️ Control del Narrador</h2>
+
+            <div class="narrator-status">
+                <div class="narrator-status-indicator" id="narratorIndicator"></div>
+                <div class="narrator-status-text" id="narratorStatusText">Listo para narrar</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="progress-info">
+                <span id="progressText">Progreso: 0%</span>
+                <span id="timeElapsed">00:00 / 00:00</span>
+            </div>
+
+            <div class="control-buttons">
+                <button class="btn btn-primary" id="btnNarrateLesson" onclick="narrateCurrentLesson()">
+                    ▶️ NARRAR LECCION COMPLETA
+                </button>
+                <button class="btn btn-success" id="btnNarrateCourse" onclick="narrateFullCourse()">
+                    📚 NARRAR CURSO COMPLETO
+                </button>
+                <button class="btn btn-secondary" id="btnPlay" onclick="togglePlay()" disabled>
+                    ⏯️ Pausar
+                </button>
+                <button class="btn btn-secondary" id="btnStop" onclick="stopNarration()" disabled>
+                    ⏹️ Detener
+                </button>
+                <button class="btn btn-secondary" id="btnRestart" onclick="restartLesson()" disabled>
+                    🔄 Reiniciar
+                </button>
+            </div>
+
+            <div class="control-buttons">
+                <button class="btn btn-secondary" id="btnPrevious" onclick="previousSegment()" disabled>
+                    ⏮️ Anterior
+                </button>
+                <button class="btn btn-secondary" id="btnNext" onclick="nextSegment()" disabled>
+                    ⏭️ Siguiente
+                </button>
+            </div>
+
+            <div class="speed-control">
+                <label for="speedSelect">🎯 Velocidad:</label>
+                <select id="speedSelect" onchange="changeSpeed()">
+                    <option value="0.75">0.75x</option>
+                    <option value="1.0" selected>1.0x</option>
+                    <option value="1.25">1.25x</option>
+                    <option value="1.5">1.5x</option>
+                    <option value="2.0">2.0x</option>
+                </select>
+            </div>
+
+            <div class="subtitles-container">
+                <h3 style="margin-bottom: 15px; color: var(--primary);">📝 Subtítulos</h3>
+                <div class="subtitles-text" id="subtitlesText">
+                    <p class="text-muted">Los subtítulos aparecerán aquí durante la narración...</p>
+                </div>
+            </div>
+        </div>
+
+        <main class="course-content" id="courseContent">
+            <div class="module" id="module1">
+                <div class="module-header">
+                    Módulo 1: De Anime a Live-Action — Guía Completa
+                </div>
+                <div class="module-content" id="module1Content">
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const courseData = {
+            title: "De Anime a Live-Action con IA",
+            modules: [
+                {
+                    id: "module1",
+                    title: "Módulo 1: De Anime a Live-Action — Guía Completa",
+                    lessons: [
+                        {
+                            id: "lesson1",
+                            title: "Bienvenida y Qué Lograrás",
+                            segments: [
+                                { type: "heading", text: "Bienvenida al curso", narration: "Bienvenido a este curso completo sobre cómo convertir escenas de anime en tomas live-action realistas usando inteligencia artificial. En este curso vas a aprender el método exacto que uso todos los días en el estudio para transformar anime en video realista, sin necesidad de equipo costoso ni un equipo de producción." },
+                                { type: "paragraph", text: "This guide takes you from **zero** to **your first live-action shot, generated and ready to post**. No skimming: we walk through the only two moves that really matter, in order.", narration: "Esta guía te lleva desde cero hasta tu primera toma live-action generada y lista para publicar. No vamos a saltarnos nada: vamos a recorrer juntos los únicos dos movimientos que realmente importan, en el orden correcto." },
+                                { type: "list", text: "- **Part 1 — Generate your image.** Pick a scene, pull a reference image from it (the keyframe), and turn it into a realistic live-action visual.\n- **Part 2 — Generate your video.** Take that image and bring it to life: camera, light, performance — without the AI falling apart.", narration: "Vamos a dividir esto en dos partes claras. En la primera parte, vas a generar tu imagen: vas a elegir una escena, extraer una imagen de referencia de ella, lo que llamamos el keyframe, y convertirlo en un visual live-action realista. En la segunda parte, vas a generar tu video: vas a tomar esa imagen y darle vida, agregando cámara, iluminación y performance, sin que la inteligencia artificial se desmorone." },
+                                { type: "paragraph", text: "This is the exact workflow I use every day at the studio. Nothing theoretical: you copy, you paste, you generate.", narration: "Este es exactamente el mismo flujo de trabajo que uso todos los días en el estudio. Nada de teoría: vas a copiar, pegar y generar. Es práctico desde el primer minuto." },
+                                { type: "note", text: "#### Complete beginners.\n\nIf you can download a video and copy-paste some text, you have the level. No editing or 3D skills are required for this first step.", narration: "Y si eres completamente principiante, no te preocupes. Si puedes descargar un video y copiar y pegar texto, ya tienes el nivel necesario. No se requiere ninguna habilidad de edición o 3D para este primer paso. Vamos a empezar desde lo más básico." }
+                            ]
+                        },
+                        {
+                            id: "lesson2",
+                            title: "El Principio en 30 Segundos",
+                            segments: [
+                                { type: "heading", text: "Anime → Live-action: cómo funciona", narration: "Ahora vamos a entender el principio fundamental en solo 30 segundos. ¿Cómo funciona exactamente convertir anime a live-action?" },
+                                { type: "paragraph", text: "A video is a sequence of images. So you don't \"convert\" a scene in one go: you work **image by image**. The path is always the same.", narration: "Un video es simplemente una secuencia de imágenes. Entonces no vas a convertir una escena completa de una sola vez: vas a trabajar imagen por imagen. El camino es siempre el mismo, y eso es lo que hace que este proceso sea predecible y repetible." },
+                                { type: "list", text: "- **You pick**: An anime clip that inspires you.\n- **You extract**: A sharp still from the scene.\n- **AI makes it real**: Part 1 of this guide.\n- **AI animates it**: Part 2 of this guide.", narration: "El proceso tiene cuatro pasos claros. Primero, eliges un clip de anime que te inspire. Segundo, extraes un fotograma nítido de esa escena. Tercero, usas inteligencia artificial para hacerlo realista, eso es la primera parte de esta guía. Y cuarto, usas inteligencia artificial para animarlo, que es la segunda parte de la guía." },
+                                { type: "paragraph", text: "This guide covers the two highlighted steps — **03** (generate the image) and **04** (generate the video). That's where 90% of the result is decided.", narration: "Esta guía cubre exactamente esos dos pasos resaltados: generar la imagen y generar el video. Y te voy a decir algo importante: ahí es donde se decide el 90% del resultado final. Si dominas estos dos pasos, ya tienes lo más difícil hecho." }
+                            ]
+                        },
+                        {
+                            id: "lesson3",
+                            title: "Tu Stack Mínimo",
+                            segments: [
+                                { type: "heading", text: "Una sola herramienta para empezar", narration: "Vamos a hablar de qué necesitas realmente para empezar. Y la buena noticia es que necesitas muy poco." },
+                                { type: "paragraph", text: "Forget the list of 15 apps. For this first guide, all you need is this:", narration: "Olvídate de las listas de 15 aplicaciones. Para esta primera guía, todo lo que necesitas es esto:" },
+                                { type: "list", text: "- **One all-in-one AI generation tool** — I work in **Higgsfield** (Nano Banana model for the image + built-in video generation). Alternative: TapNow / Seedance. The tool does the image *and* the video, so you stay in one place.\n- **A way to grab a frame** — a video player and the screenshot key are enough to start.\n- **A basic editor** — your phone's editing app is plenty for stitching your shots together.", narration: "Primero, necesitas una herramienta de generación de inteligencia artificial todo en uno. Yo trabajo en Higgsfield, usando el modelo Nano Banana para la imagen más la generación de video integrada. Alternativas: TapNow o Seedance. La herramienta hace la imagen y el video, así que te mantienes en un solo lugar. Segundo, necesitas una forma de capturar un fotograma: un reproductor de video y la tecla de captura de pantalla son suficientes para empezar. Y tercero, un editor básico: la aplicación de edición de tu teléfono es más que suficiente para unir tus tomas." },
+                                { type: "note", text: "Because color grading, upscaling and fps conversion are what separate a \"fine\" video from a \"signature\" one. We keep that for the advanced course. Here, we're aiming for your first clip **finished and posted**, not perfection.", narration: "Ahora, ¿por qué no estamos hablando de corrección de color, upscaling o conversión de fps? Porque eso es lo que separa un video 'bien hecho' de uno con 'firma profesional'. Eso lo guardamos para el curso avanzado. Aquí, nuestro objetivo es que tengas tu primer clip terminado y publicado, no la perfección." }
+                            ]
+                        },
+                        {
+                            id: "lesson4",
+                            title: "Parte 1: Generar tu Imagen",
+                            segments: [
+                                { type: "heading", text: "Generar tu imagen", narration: "Ahora entramos en la Parte 1: generar tu imagen. Y esto es crítico: todo empieza con la imagen. Si tu keyframe live-action es bueno, tu video también será bueno. Si está mal hecho, ningún prompt de video lo va a salvar. Así que vamos a tomar el tiempo que necesita." },
+                                { type: "paragraph", text: "Choose a scene with a **strong composition**: a character facing forward or in profile, a striking wide shot, a gaze. For now, avoid shots packed with action or characters — the simpler it is, the more faithful the AI.", narration: "Lo primero: elige una escena con una composición fuerte. Busca un personaje de frente o de perfil, un plano general impactante, una mirada. Por ahora, evita tomas llenas de acción o muchos personajes. Cuanto más simple sea, más fiel será la inteligencia artificial." },
+                                { type: "list", text: "- Pause the video on the exact moment you want to recreate.\n- Capture a **sharp** still (not during motion blur). That's your **keyframe**: the reference image.\n- Keep good resolution — too small an image gives a mushy result.", narration: "Tres pasos prácticos aquí. Primero, pausa el video en el momento exacto que quieres recrear. Segundo, captura un fotograma nítido, no durante el motion blur. Ese es tu keyframe, tu imagen de referencia. Y tercero, mantén buena resolución: una imagen demasiado pequeña da un resultado borroso." },
+                                { type: "paragraph", text: "In your tool, you have **three ways** to generate your live image. Click to explore each:", narration: "En tu herramienta, tienes tres formas de generar tu imagen live-action. Vamos a explorar cada una:" }
+                            ]
+                        },
+                        {
+                            id: "lesson5",
+                            title: "Tres Formas de Generar",
+                            segments: [
+                                { type: "heading", text: "A · Imagen → Live-action — la más simple", narration: "La primera forma es la más simple: Imagen a Live-action. Subes tu keyframe y pides una versión live-action realista. La inteligencia artificial mantiene la composición y la pose, y cambia el estilo anime por algo real. Perfecto para empezar." },
+                                { type: "heading", text: "B · Imagen + referencia de personaje — para consistencia", narration: "La segunda forma es Imagen más referencia de personaje, para consistencia. Subes tu keyframe y también una imagen de referencia del rostro o personaje que quieres. La inteligencia artificial coloca ese personaje en la escena. Es esencial cuando necesitas el mismo actor en varias tomas." },
+                                { type: "heading", text: "C · Texto → Imagen — construir desde cero", narration: "La tercera forma es Texto a Imagen, construir desde cero. ¿No tienes keyframe? Describes la escena completamente por escrito y la inteligencia artificial la crea. Da más libertad, pero necesita un prompt más ajustado, que vamos a ver en el próximo paso." }
+                            ]
+                        },
+                        {
+                            id: "lesson6",
+                            title: "Estructura de un Buen Prompt",
+                            segments: [
+                                { type: "paragraph", text: "A good prompt isn't a catch-all sentence. It's a **list of clear blocks**, from most important to least:", narration: "Ahora, hablemos de prompts. Un buen prompt no es una frase que intenta decir todo de una vez. Es una lista de bloques claros, del más importante al menos importante. Vamos a ver cada bloque." },
+                                { type: "table", text: "| SUBJECT | Who / what is in the image |\n| ACTION / POSE | What the character does, their attitude, where they're looking. |\n| FRAMING | Wide shot, close-up, high angle… and the camera angle. |\n| LIGHT | Source, direction, mood (soft late-day light, cold neon…). |\n| MOOD | The feel: realistic, cinematic, desaturated, fine film grain. |\n| AVOID | What you don't want: drawing, cartoon, distortions, on-screen text. |", narration: "Primero, SUBJECT: quién o qué está en la imagen, a menos que proporciones una referencia, y ahí viene la regla de oro que vamos a ver. Segundo, ACTION o POSE: qué hace el personaje, su actitud, hacia dónde mira. Tercero, FRAMING: plano general, primer plano, ángulo alto, y el ángulo de cámara. Cuarto, LIGHT: fuente, dirección, ambiente, como luz suave de final de día o neón frío. Quinto, MOOD: la sensación, realista, cinematográfico, desaturado, grano de película fino. Y sexto, AVOID: lo que no quieres, como dibujo, cartoon, distorsiones, texto en pantalla." },
+                                { type: "note", text: "#### Reference image = NEVER describe the character.\n\nIf you uploaded a reference of the face or character, don't describe it in the prompt (no hair, no outfit, no face). The reference is enough; describing it on top creates conflicts that distort the result. In that case, your prompt only holds the action, framing, light and mood.", narration: "Aquí viene la regla de oro: si subiste una imagen de referencia del rostro o personaje, NUNCA describas al personaje en el prompt. Nada de cabello, nada de outfit, nada de rostro. La referencia es suficiente. Describirlo además crea conflictos que distorsionan el resultado. En ese caso, tu prompt solo contiene la acción, el encuadre, la luz y el ambiente." },
+                                { type: "note", text: "#### Self-contained prompt.\n\nEvery prompt must stand on its own. The AI starts from scratch each generation: no \"like the previous shot.\" Everything that matters lives in THIS prompt.", narration: "Otra regla importante: cada prompt debe ser autocontenido. La inteligencia artificial empieza desde cero en cada generación: no hay 'como la toma anterior'. Todo lo que importa vive en ESTE prompt. Así que sé explícito y completo." }
+                            ]
+                        },
+                        {
+                            id: "lesson7",
+                            title: "Tres Prompts de Imagen Listos para Copiar",
+                            segments: [
+                                { type: "paragraph", text: "3 image prompts · ready to copy", narration: "Ahora te voy a dar tres prompts de imagen listos para copiar. Puedes usarlos directamente y adaptarlos a tu escena." }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        let synth = window.speechSynthesis;
+        let currentModuleIndex = 0;
+        let currentLessonIndex = 0;
+        let currentSegmentIndex = 0;
+        let isNarrating = false;
+        let isPaused = false;
+        let isFullCourseMode = false;
+        let currentUtterance = null;
+
+        function initApp() {
+            renderCourse();
+            updateUI();
+        }
+
+        function renderCourse() {
+            const moduleContainer = document.getElementById('module1Content');
+            moduleContainer.innerHTML = '';
+
+            courseData.modules[0].lessons.forEach((lesson, lIndex) => {
+                const lessonDiv = document.createElement('div');
+                lessonDiv.className = 'lesson';
+                lessonDiv.id = lesson.id;
+
+                let contentHtml = `<div class="lesson-header">
+                    <h2>${lesson.title}</h2>
+                    <span class="badge" id="badge-${lesson.id}"></span>
+                </div><div class="lesson-content">`;
+
+                lesson.segments.forEach((seg, sIndex) => {
+                    contentHtml += `<div class="subtitle-segment" id="seg-${lIndex}-${sIndex}">`;
+                    if (seg.type === 'heading') {
+                        contentHtml += `<h3>${seg.text}</h3>`;
+                    } else if (seg.type === 'paragraph') {
+                        contentHtml += `<p>${formatMarkdown(seg.text)}</p>`;
+                    } else if (seg.type === 'list') {
+                        contentHtml += `<ul>${seg.text.split('\n').map(item => `<li>${formatMarkdown(item.replace(/^-\s*/, ''))}</li>`).join('')}</ul>`;
+                    } else if (seg.type === 'note') {
+                        contentHtml += `<blockquote>${formatMarkdown(seg.text)}</blockquote>`;
+                    } else if (seg.type === 'table') {
+                        contentHtml += `<p><em>[Tabla de prompts]</em></p>`;
+                    }
+                    contentHtml += `</div>`;
+                });
+
+                contentHtml += `</div>`;
+                lessonDiv.innerHTML = contentHtml;
+                moduleContainer.appendChild(lessonDiv);
+            });
+        }
+
+        function formatMarkdown(text) {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/#### (.*?)\n/g, '<strong>$1</strong><br>');
+        }
+
+        function narrateCurrentLesson() {
+            stopNarration();
+            isFullCourseMode = false;
+            currentSegmentIndex = 0;
+            startSegmentNarration();
+        }
+
+        function narrateFullCourse() {
+            stopNarration();
+            isFullCourseMode = true;
+            currentLessonIndex = 0;
+            currentSegmentIndex = 0;
+            startSegmentNarration();
+        }
+
+        function startSegmentNarration() {
+            const lesson = courseData.modules[0].lessons[currentLessonIndex];
+            if (!lesson) return;
+
+            const segment = lesson.segments[currentSegmentIndex];
+            if (!segment) {
+                currentLessonIndex++;
+                if (isFullCourseMode && currentLessonIndex < courseData.modules[0].lessons.length) {
+                    currentSegmentIndex = 0;
+                    startSegmentNarration();
+                } else {
+                    stopNarration();
+                    document.getElementById('narratorStatusText').innerText = "Narración completada";
+                }
+                return;
+            }
+
+            highlightActiveSegment();
+
+            currentUtterance = new SpeechSynthesisUtterance(segment.narration);
+            currentUtterance.lang = 'es-ES';
+            currentUtterance.rate = parseFloat(document.getElementById('speedSelect').value);
+
+            currentUtterance.onstart = () => {
+                isNarrating = true;
+                isPaused = false;
+                updateUI();
+            };
+
+            currentUtterance.onend = () => {
+                markSegmentCompleted();
+                currentSegmentIndex++;
+                startSegmentNarration();
+            };
+
+            currentUtterance.onerror = () => {
+                stopNarration();
+            };
+
+            synth.speak(currentUtterance);
+        }
+
+        function togglePlay() {
+            if (synth.speaking) {
+                if (synth.paused) {
+                    synth.resume();
+                    isPaused = false;
+                } else {
+                    synth.pause();
+                    isPaused = true;
+                }
+                updateUI();
+            }
+        }
+
+        function stopNarration() {
+            synth.cancel();
+            isNarrating = false;
+            isPaused = false;
+            clearHighlights();
+            updateUI();
+        }
+
+        function restartLesson() {
+            stopNarration();
+            currentSegmentIndex = 0;
+            startSegmentNarration();
+        }
+
+        function previousSegment() {
+            if (currentSegmentIndex > 0) {
+                synth.cancel();
+                currentSegmentIndex--;
+                startSegmentNarration();
+            }
+        }
+
+        function nextSegment() {
+            const lesson = courseData.modules[0].lessons[currentLessonIndex];
+            if (currentSegmentIndex < lesson.segments.length - 1) {
+                synth.cancel();
+                currentSegmentIndex++;
+                startSegmentNarration();
+            }
+        }
+
+        function changeSpeed() {
+            if (isNarrating) {
+                const isP = isPaused;
+                synth.cancel();
+                startSegmentNarration();
+                if (isP) synth.pause();
+            }
+        }
+
+        function highlightActiveSegment() {
+            clearHighlights();
+            const lesson = courseData.modules[0].lessons[currentLessonIndex];
+            const lessonElem = document.getElementById(lesson.id);
+            if (lessonElem) {
+                lessonElem.classList.add('narrating');
+                const badge = document.getElementById(`badge-${lesson.id}`);
+                if (badge) {
+                    badge.className = 'badge badge-narrating';
+                    badge.innerText = 'Narrando';
+                }
+            }
+
+            const segElem = document.getElementById(`seg-${currentLessonIndex}-${currentSegmentIndex}`);
+            if (segElem) {
+                segElem.classList.add('active');
+                segElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                document.getElementById('subtitlesText').innerHTML = `<p>${lesson.segments[currentSegmentIndex].narration}</p>`;
+            }
+
+            updateProgress();
+        }
+
+        function markSegmentCompleted() {
+            const segElem = document.getElementById(`seg-${currentLessonIndex}-${currentSegmentIndex}`);
+            if (segElem) {
+                segElem.classList.remove('active');
+                segElem.classList.add('completed');
+            }
+        }
+
+        function clearHighlights() {
+            document.querySelectorAll('.lesson').forEach(el => el.classList.remove('narrating'));
+            document.querySelectorAll('.subtitle-segment').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.badge').forEach(el => {
+                el.className = 'badge';
+                el.innerText = '';
+            });
+        }
+
+        function updateProgress() {
+            const totalLessons = courseData.modules[0].lessons.length;
+            const progress = Math.round(((currentLessonIndex + (currentSegmentIndex / 5)) / totalLessons) * 100);
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressText').innerText = `Progreso: ${progress}%`;
+        }
+
+        function updateUI() {
+            const indicator = document.getElementById('narratorIndicator');
+            const statusText = document.getElementById('narratorStatusText');
+
+            document.getElementById('btnPlay').disabled = !isNarrating;
+            document.getElementById('btnStop').disabled = !isNarrating;
+            document.getElementById('btnRestart').disabled = !isNarrating;
+            document.getElementById('btnPrevious').disabled = !isNarrating || currentSegmentIndex === 0;
+            document.getElementById('btnNext').disabled = !isNarrating;
+
+            if (isNarrating) {
+                if (isPaused) {
+                    indicator.className = 'narrator-status-indicator';
+                    statusText.innerText = 'Pausado';
+                    document.getElementById('btnPlay').innerText = '▶️ Reanudar';
+                } else {
+                    indicator.className = 'narrator-status-indicator active';
+                    statusText.innerText = 'Narrando...';
+                    document.getElementById('btnPlay').innerText = '⏸️ Pausar';
+                }
+            } else {
+                indicator.className = 'narrator-status-indicator';
+                statusText.innerText = 'Listo para narrar';
+                document.getElementById('btnPlay').innerText = '⏯️ Pausar';
+            }
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
