@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sliders, Smartphone, Terminal, Cpu, Play, HelpCircle, 
   Layers, Car, Heart, SlidersHorizontal, RefreshCw, Zap, Check, Plus, Trash2, Globe,
-  ChevronDown, ChevronUp, Shield
+  ChevronDown, ChevronUp, Shield, Sparkles
 } from 'lucide-react';
 import { 
   Profile, OverlayTemplate, InputDevice, LogMessage, PresetStoreItem 
@@ -23,10 +23,11 @@ import ShizukuConsole from './components/ShizukuConsole';
 import VehicleDashboard from './components/VehicleDashboard';
 import DevicesPanel from './components/DevicesPanel';
 import CloudTutorialHub from './components/CloudTutorialHub';
+import AnimeToLiveActionGuide from './components/AnimeToLiveActionGuide';
 
 export default function App() {
   // Navigation active modules
-  type TabType = 'overlays' | 'profiles' | 'shizuku' | 'vehicles' | 'devices' | 'presets';
+  type TabType = 'overlays' | 'profiles' | 'shizuku' | 'vehicles' | 'devices' | 'presets' | 'anime_guide';
   const [activeTab, setActiveTab] = useState<TabType>('overlays');
   const [isSubsystemsExpanded, setIsSubsystemsExpanded] = useState<boolean>(true);
 
@@ -343,9 +344,10 @@ export default function App() {
         <div className="lg:col-span-8 flex flex-col overflow-y-auto p-5 md:p-6 pb-20 space-y-6">
           
           {/* MULTI MODULE SELECTOR TAB DECK */}
-          <div className="bg-[#111114] border border-white/5 p-1 rounded-2xl grid grid-cols-3 md:grid-cols-6 gap-1 select-none shadow-xl">
-            {(['overlays', 'profiles', 'shizuku', 'vehicles', 'devices', 'presets'] as const).map((tab) => {
+          <div className="bg-[#111114] border border-white/5 p-1 rounded-2xl grid grid-cols-3 md:grid-cols-7 gap-1 select-none shadow-xl">
+            {(['anime_guide', 'overlays', 'profiles', 'shizuku', 'vehicles', 'devices', 'presets'] as const).map((tab) => {
               const labels = {
+                anime_guide: 'Anime IA Guide',
                 overlays: 'Overlays',
                 profiles: 'Playbook',
                 shizuku: 'Shizuku',
@@ -354,6 +356,7 @@ export default function App() {
                 presets: 'Presets Store'
               };
               const icons = {
+                anime_guide: <Sparkles className="w-4 h-4 text-purple-400" />,
                 overlays: <Layers className="w-4 h-4" />,
                 profiles: <Play className="w-4 h-4" />,
                 shizuku: <Terminal className="w-4 h-4" />,
@@ -383,6 +386,11 @@ export default function App() {
           {/* ACTIVE TAB PANEL VIEWS */}
           <div className="relative flex-1">
             
+            {/* VIEW 0: ANIME TO LIVE ACTION LATAM GUIDE */}
+            {activeTab === 'anime_guide' && (
+              <AnimeToLiveActionGuide />
+            )}
+
             {/* VIEW 1: OVERLAY CUSTOMIZER LAYER */}
             {activeTab === 'overlays' && (
               <div id="panel_overlays" className="space-y-6">
